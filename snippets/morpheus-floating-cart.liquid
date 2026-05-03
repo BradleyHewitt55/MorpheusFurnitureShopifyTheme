@@ -1,0 +1,12 @@
+{% doc %}
+  Renders the mobile-only floating cart trigger.
+{% enddoc %}
+
+{% if request.page_type != 'cart' %}
+  <button class="floating-cart{% if cart.item_count == 0 %} hidden{% endif %}" type="button" data-cart-trigger aria-label="Open cart">
+    <i class="bi bi-cart cart-icon"></i>
+    <span class="cart-count" data-cart-count>
+      {% if cart.item_count > 99 %}99+{% else %}{{ cart.item_count }}{% endif %}
+    </span>
+  </button>
+{% endif %}

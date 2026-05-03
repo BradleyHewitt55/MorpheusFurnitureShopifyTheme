@@ -1,0 +1,33 @@
+{% doc %}
+  Renders the Morpheus sidebar drawer from the sidebar menu handle.
+{% enddoc %}
+
+{% liquid
+  assign sidebar_menu = linklists['sidebar']
+%}
+
+<aside class="sidebar" data-sidebar>
+  <div class="sidebar-content-wrapper">
+    <div class="sidebar-container menu-content">
+      <div class="sidebar-container-items">
+        {% for link in sidebar_menu.links %}
+          <a href="{{ link.url }}" class="sidebar-links-item">
+            <span class="menu-link-text">{{ link.title }}</span>
+            {% if link.links != blank %}
+              <i class="bi bi-chevron-down"></i>
+            {% else %}
+              <i class="bi bi-chevron-right"></i>
+            {% endif %}
+          </a>
+          {% if link.links != blank %}
+            <div class="sidebar-submenu">
+              {% for child_link in link.links %}
+                <a href="{{ child_link.url }}" class="sidebar-sublink">{{ child_link.title }}</a>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</aside>

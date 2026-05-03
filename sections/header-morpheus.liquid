@@ -1,3 +1,11 @@
+{% liquid
+  assign main_menu = linklists['main-menu']
+  assign account_target = routes.account_login_url
+  if customer
+    assign account_target = routes.account_url
+  endif
+%}
+
 <style>
   {% if section.settings.sticky_header %}
     .section-header-morpheus {
@@ -8,130 +16,112 @@
   {% endif %}
 </style>
 
-{%- style -%}
-  .top-navbar {
-    background-color: #4b0082 !important;
-  }
-
-  .section-header-morpheus {
-    background-color: #4b0082 !important;
-    --primary-color: #4b0082;
-  }
-
-  .main-column {
-    background-color: #4b0082 !important;
-  }
-
-  .search-column {
-    background-color: #4b0082 !important;
-  }
-{%- endstyle -%}
-
-<link rel="stylesheet" href="{{ 'section-header-morpheus.css' | asset_url }}">
+{{ 'section-header-morpheus.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'section-header-morpheus.js' | asset_url }}" defer></script>
 
-<div class="top-navbar search-closed section-header-morpheus" data-section-id="{{ section.id }}">
+<header
+  class="section-header-morpheus"
+  data-section-id="{{ section.id }}"
+  data-enable-cart-drawer="{{ section.settings.enable_cart_drawer }}"
+>
+  <div class="top-navbar search-open" data-morpheus-header>
+    <div class="main-column">
+      {% if request.page_type != 'index' %}
+        <button class="icon-btn back-btn" type="button" aria-label="Go back" data-back-button>
+          <i class="bi bi-chevron-left"></i>
+        </button>
+      {% endif %}
 
-  <!-- Main Bar -->
-  <div class="main-column">
-
-    <!-- Mobile Back Button (Hide on Desktop) -->
-    {% if request.page_type != 'index' %}
-      <button class="icon-btn back-btn" aria-label="Go back">
-        <i class="bi bi-chevron-left"></i>
-      </button>
-    {% endif %}
-
-    <!-- Logo -->
-    <a href="/" class="logo">
-      <img src="{{ settings.logo | image_url: width: 500 }}" alt="{{ shop.name }}" />
-    </a>
-
-    <!-- Desktop Navigation -->
-    <nav class="desktop-nav">
-      <a href="/" class="nav-link">Home</a>
-      <a href="/collections/all" class="nav-link">Shop</a>
-      <a href="/collections/sale" class="nav-link">
-        <i class="bi bi-tag-fill"></i>
-        On Sale
-      </a>
-      <a href="/pages/about" class="nav-link">About Us</a>
-    </nav>
-
-    <!-- Actions -->
-    <div class="actions">
-      <!-- Search Toggle -->
-      <button class="icon-btn search-toggle" aria-label="Search">
-        <i class="bi bi-search"></i>
-      </button>
-
-      <!-- Cart -->
-      <button class="icon-btn cart-btn" aria-label="Cart">
-        <i class="bi bi-cart"></i>
-        {% if cart.item_count > 0 %}
-          <span class="badge">{{ cart.item_count }}</span>
+      <a href="{{ routes.root_url }}" class="logo" aria-label="{{ shop.name }}">
+        {% if settings.logo %}
+          {{
+            settings.logo
+            | image_url: width: 500
+            | image_tag: alt: shop.name, loading: 'eager'
+          }}
+        {% else %}
+          <span>{{ shop.name }}</span>
         {% endif %}
-      </button>
+      </a>
 
-      <!-- Account -->
-      <div class="account-menu">
-        <button class="icon-btn account-btn" aria-label="Account">
-          <i class="bi bi-person"></i>
-          {% if customer %}
-            <span class="status-dot"></span>
-          {% endif %}
+      <nav class="desktop-nav" aria-label="Primary navigation">
+        {% for link in main_menu.links %}
+          <a
+            href="{{ link.url }}"
+            class="nav-link{% if link.current %} active{% endif %}"
+            {% if link.current %}aria-current="page"{% endif %}
+          >
+            {% if link.title == 'On Sale' %}
+              <i class="bi bi-tag-fill"></i>
+            {% endif %}
+            <span>{{ link.title }}</span>
+          </a>
+        {% endfor %}
+      </nav>
+
+      <div class="actions">
+        <button class="icon-btn search-toggle" type="button" aria-label="Search" aria-expanded="true" data-search-toggle>
+          <i class="bi bi-search"></i>
         </button>
 
-        <!-- Account Dropdown (shown via JS) -->
-        <div class="account-dropdown" hidden>
-          {% if customer %}
-            <a href="{{ routes.account_url }}" class="account-link">
-              <i class="bi bi-person"></i>
-              Profile
-            </a>
-            <a href="{{ routes.account_url }}/addresses" class="account-link">
-              <i class="bi bi-heart"></i>
-              Wishlist
-            </a>
-            <a href="{{ routes.account_logout_url }}" class="account-link">
-              <i class="bi bi-box-arrow-right"></i>
-              Logout
-            </a>
-          {% else %}
-            <a href="{{ routes.account_login_url }}" class="account-link">
-              <i class="bi bi-box-arrow-in-right"></i>
-              Login
-            </a>
-            <a href="{{ routes.account_register_url }}" class="account-link">
-              <i class="bi bi-person-plus"></i>
-              Register
-            </a>
-          {% endif %}
+        <button class="icon-btn cart-btn" type="button" aria-label="Cart" data-cart-trigger>
+          <i class="bi bi-cart"></i>
+          <span class="badge{% if cart.item_count == 0 %} hidden{% endif %}" data-cart-count>
+            {% if cart.item_count > 99 %}99+{% else %}{{ cart.item_count }}{% endif %}
+          </span>
+        </button>
+
+        <div class="account-menu" data-account-menu>
+          <a href="{{ account_target }}" class="icon-btn account-btn" aria-label="Account" data-account-button aria-expanded="false">
+            <i class="bi bi-person"></i>
+            {% if customer %}
+              <span class="status-dot"></span>
+            {% endif %}
+          </a>
+
+          <div class="account-dropdown" hidden data-account-dropdown>
+            {% if customer %}
+              <a href="{{ routes.account_url }}" class="account-link">
+                <i class="bi bi-person"></i>
+                <span>Profile</span>
+              </a>
+              <a href="{{ routes.account_addresses_url }}" class="account-link">
+                <i class="bi bi-geo-alt"></i>
+                <span>Wishlist</span>
+              </a>
+              <a href="{{ routes.account_logout_url }}" class="account-link">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Logout</span>
+              </a>
+            {% else %}
+              <a href="{{ routes.account_login_url }}" class="account-link">
+                <i class="bi bi-box-arrow-in-right"></i>
+                <span>Login</span>
+              </a>
+              <a href="{{ routes.account_register_url }}" class="account-link">
+                <i class="bi bi-person-plus"></i>
+                <span>Register</span>
+              </a>
+            {% endif %}
+          </div>
         </div>
+      </div>
+
+      <div class="burger-menu">
+        {% render 'morpheus-burger' %}
       </div>
     </div>
 
-    <!-- Mobile Burger (Hide on Desktop) -->
-    <div class="burger-menu">
-      <button class="burger-btn" aria-label="Menu" aria-expanded="false">
-        <span class="burger-line"></span>
-        <span class="burger-line"></span>
-        <span class="burger-line"></span>
-      </button>
+    <div class="search-column">
+      {% render 'snippet-search-bar-morpheus' %}
     </div>
   </div>
 
-  <!-- Search Row -->
-  <div class="search-column">
-    {% render 'snippet-search-bar-morpheus' %}
-  </div>
-
-</div>
-
-<!-- Cart Drawer (Shopify's native drawer) -->
-{% if section.settings.enable_cart_drawer %}
-  <cart-drawer></cart-drawer>
-{% endif %}
+  <div class="sidebar-layer" data-sidebar-overlay></div>
+  {% render 'morpheus-sidebar-menu' %}
+  {% render 'morpheus-mobile-navbar' %}
+  {% render 'morpheus-floating-cart' %}
+</header>
 
 {% schema %}
 {
@@ -139,7 +129,7 @@
   "settings": [
     {
       "type": "header",
-      "content": "Header Settings"
+      "content": "Header settings"
     },
     {
       "type": "checkbox",

@@ -1,164 +1,259 @@
-// Morpheus Header - Scroll Detection & Interactivity
-
 class MorpheusHeader {
   constructor(section) {
     this.section = section;
-    this.navbar = section.querySelector('.top-navbar');
-    this.searchToggle = section.querySelector('.search-toggle');
-    this.cartBtn = section.querySelector('.cart-btn');
-    this.accountBtn = section.querySelector('.account-btn');
-    this.accountDropdown = section.querySelector('.account-dropdown');
-    this.backBtn = section.querySelector('.back-btn');
-    this.burgerBtn = section.querySelector('.burger-btn');
-    this.isScrolled = false;
-
+    this.navbar = section.querySelector('[data-morpheus-header]');
+    this.searchToggle = section.querySelector('[data-search-toggle]');
+    this.searchForm = section.querySelector('[data-search-form]');
+    this.searchFilterToggle = section.querySelector('[data-search-filter-toggle]');
+    this.searchFilterDropdown = section.querySelector('[data-search-filter-dropdown]');
+    this.searchOverlay = section.querySelector('[data-search-overlay]');
+    this.searchOptions = section.querySelectorAll('[data-search-option]');
+    this.searchFilterLabel = section.querySelector('[data-search-filter-label]');
+    this.searchTypeInput = section.querySelector('[data-search-type-input]');
+    this.accountMenu = section.querySelector('[data-account-menu]');
+    this.accountButton = section.querySelector('[data-account-button]');
+    this.accountDropdown = section.querySelector('[data-account-dropdown]');
+    this.burgerButton = section.querySelector('[data-burger-button]');
+    this.sidebar = section.querySelector('[data-sidebar]');
+    this.sidebarOverlay = section.querySelector('[data-sidebar-overlay]');
+    this.backButton = section.querySelector('[data-back-button]');
+    this.cartTriggers = section.querySelectorAll('[data-cart-trigger]');
+    this.cartCountNodes = section.querySelectorAll('[data-cart-count]');
+    this.lastScrollTop = 0;
+    this.searchVisible = true;
+    this.delta = 15;
+    this.handleScroll = this.handleScroll.bind(this);
+    this.handleDocumentClick = this.handleDocumentClick.bind(this);
+    this.handleCartChange = this.handleCartChange.bind(this);
     this.init();
   }
 
   init() {
-    // Scroll detection with debouncing
-    window.addEventListener('scroll', () => this.detectScroll(), { passive: true });
+    window.addEventListener('scroll', this.handleScroll, { passive: true });
+    document.addEventListener('click', this.handleDocumentClick);
+    document.addEventListener('cart:change', this.handleCartChange);
 
-    // Search toggle
-    if (this.searchToggle) {
-      this.searchToggle.addEventListener('click', () => this.toggleSearch());
-    }
+    this.searchToggle?.addEventListener('click', () => this.toggleSearch());
+    this.searchFilterToggle?.addEventListener('click', () => this.toggleFilterDropdown());
+    this.searchFilterToggle?.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        this.toggleFilterDropdown();
+      }
+    });
 
-    // Cart button
-    if (this.cartBtn) {
-      this.cartBtn.addEventListener('click', () => this.openCart());
-    }
+    this.searchOptions.forEach((option) => {
+      option.addEventListener('click', () => this.selectSearchOption(option));
+    });
 
-    // Account menu toggle
-    if (this.accountBtn) {
-      this.accountBtn.addEventListener('click', () => this.toggleAccountMenu());
-    }
+    this.accountButton?.addEventListener('click', (event) => {
+      event.preventDefault();
+      this.toggleAccountDropdown();
+    });
 
-    // Close account menu when clicking outside
-    document.addEventListener('click', (e) => this.handleClickOutside(e));
+    this.burgerButton?.addEventListener('click', () => this.toggleSidebar());
+    this.sidebarOverlay?.addEventListener('click', () => this.closeSidebar());
+    this.backButton?.addEventListener('click', () => this.navigateBack());
 
-    // Back button
-    if (this.backBtn) {
-      this.backBtn.addEventListener('click', () => this.navigateBack());
-    }
+    this.cartTriggers.forEach((trigger) => {
+      trigger.addEventListener('click', () => this.openCart());
+    });
 
-    // Burger menu
-    if (this.burgerBtn) {
-      this.burgerBtn.addEventListener('click', () => this.toggleMobileMenu());
-    }
+    this.sidebar?.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => this.closeSidebar());
+    });
 
-    // Listen for cart updates
-    document.addEventListener('cart:change', () => this.updateCartBadge());
+    this.handleScroll();
   }
 
-  detectScroll() {
-    const scrolled = window.scrollY > 50;
+  handleScroll() {
+    const scrollTop = window.scrollY;
+    const documentHeight = document.documentElement.scrollHeight;
+    const viewportHeight = window.innerHeight;
+    const isBottom = scrollTop + viewportHeight >= documentHeight - 50;
+    const isScrolled = scrollTop > 0;
 
-    if (scrolled !== this.isScrolled) {
-      this.isScrolled = scrolled;
-      if (scrolled) {
-        this.navbar.classList.add('scrolled');
-      } else {
-        this.navbar.classList.remove('scrolled');
-      }
+    this.navbar.classList.toggle('scrolled', isScrolled);
+
+    if (Math.abs(this.lastScrollTop - scrollTop) <= this.delta) {
+      return;
     }
+
+    if (scrollTop <= 60 || isBottom) {
+      this.setSearchVisible(true);
+      this.lastScrollTop = scrollTop;
+      return;
+    }
+
+    this.setSearchVisible(scrollTop < this.lastScrollTop);
+    this.lastScrollTop = scrollTop;
+  }
+
+  setSearchVisible(isVisible) {
+    if (this.searchVisible === isVisible) {
+      return;
+    }
+
+    this.searchVisible = isVisible;
+    this.navbar.classList.toggle('search-open', isVisible);
+    this.navbar.classList.toggle('search-closed', !isVisible);
+    this.searchToggle?.setAttribute('aria-expanded', String(isVisible));
   }
 
   toggleSearch() {
-    const isOpen = this.navbar.classList.contains('search-open');
-    if (isOpen) {
-      this.navbar.classList.remove('search-open');
-      this.navbar.classList.add('search-closed');
-    } else {
-      this.navbar.classList.remove('search-closed');
-      this.navbar.classList.add('search-open');
+    this.setSearchVisible(!this.searchVisible);
+  }
+
+  toggleFilterDropdown() {
+    const isOpen = this.searchFilterDropdown?.classList.contains('show');
+    this.searchFilterDropdown?.classList.toggle('show', !isOpen);
+    this.searchFilterToggle?.classList.toggle('active', !isOpen);
+    this.searchFilterToggle?.setAttribute('aria-expanded', String(!isOpen));
+    if (this.searchOverlay) {
+      this.searchOverlay.hidden = isOpen;
     }
+  }
+
+  closeFilterDropdown() {
+    this.searchFilterDropdown?.classList.remove('show');
+    this.searchFilterToggle?.classList.remove('active');
+    this.searchFilterToggle?.setAttribute('aria-expanded', 'false');
+    if (this.searchOverlay) {
+      this.searchOverlay.hidden = true;
+    }
+  }
+
+  selectSearchOption(option) {
+    this.searchOptions.forEach((item) => item.classList.remove('active'));
+    option.classList.add('active');
+
+    const label = option.getAttribute('data-label') || 'All Categories';
+    const searchTypes = option.getAttribute('data-search-types') || '';
+
+    if (this.searchFilterLabel) {
+      this.searchFilterLabel.textContent = label;
+    }
+
+    if (this.searchTypeInput) {
+      this.searchTypeInput.value = searchTypes;
+    }
+
+    this.closeFilterDropdown();
+  }
+
+  toggleAccountDropdown() {
+    const isHidden = this.accountDropdown?.hasAttribute('hidden');
+    if (!this.accountDropdown || !this.accountButton) {
+      return;
+    }
+
+    if (isHidden) {
+      this.accountDropdown.removeAttribute('hidden');
+      this.accountButton.setAttribute('aria-expanded', 'true');
+    } else {
+      this.accountDropdown.setAttribute('hidden', '');
+      this.accountButton.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  closeAccountDropdown() {
+    if (!this.accountDropdown || !this.accountButton) {
+      return;
+    }
+
+    this.accountDropdown.setAttribute('hidden', '');
+    this.accountButton.setAttribute('aria-expanded', 'false');
+  }
+
+  toggleSidebar() {
+    const isOpen = this.sidebar?.classList.contains('open');
+    if (isOpen) {
+      this.closeSidebar();
+      return;
+    }
+
+    this.sidebar?.classList.add('open');
+    this.sidebarOverlay?.classList.add('visible');
+    this.burgerButton?.classList.add('is-active');
+    this.burgerButton?.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('overflow-hidden-mobile');
+    this.section.querySelector('.floating-cart')?.classList.add('sidebar-open');
+  }
+
+  closeSidebar() {
+    this.sidebar?.classList.remove('open');
+    this.sidebarOverlay?.classList.remove('visible');
+    this.burgerButton?.classList.remove('is-active');
+    this.burgerButton?.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('overflow-hidden-mobile');
+    this.section.querySelector('.floating-cart')?.classList.remove('sidebar-open');
   }
 
   openCart() {
-    // Trigger Shopify's cart drawer if it exists
-    const cartDrawer = document.querySelector('cart-drawer');
-    if (cartDrawer) {
-      cartDrawer.open();
-    } else {
-      // Fallback: navigate to cart page
-      window.location.href = '/cart';
+    const drawer = document.querySelector('cart-drawer');
+    if (drawer && typeof drawer.open === 'function') {
+      drawer.open();
+      return;
     }
-  }
 
-  toggleAccountMenu() {
-    if (this.accountDropdown) {
-      const isHidden = this.accountDropdown.hasAttribute('hidden');
-      if (isHidden) {
-        this.accountDropdown.removeAttribute('hidden');
-      } else {
-        this.accountDropdown.setAttribute('hidden', '');
-      }
+    const overlay = document.querySelector('#CartDrawer-Overlay');
+    if (drawer && overlay) {
+      drawer.classList.add('active');
+      document.body.classList.add('overflow-hidden');
+      return;
     }
-  }
 
-  handleClickOutside(e) {
-    if (this.accountDropdown && !this.accountDropdown.hasAttribute('hidden')) {
-      if (!this.section.contains(e.target)) {
-        this.accountDropdown.setAttribute('hidden', '');
-      }
-    }
+    window.location.assign('/cart');
   }
 
   navigateBack() {
     if (window.history.length > 1) {
       window.history.back();
-    } else {
-      window.location.href = '/';
+      return;
+    }
+
+    window.location.assign('/');
+  }
+
+  handleDocumentClick(event) {
+    if (this.accountMenu && !this.accountMenu.contains(event.target)) {
+      this.closeAccountDropdown();
+    }
+
+    if (
+      this.searchForm &&
+      !this.searchForm.contains(event.target) &&
+      this.searchFilterDropdown?.classList.contains('show')
+    ) {
+      this.closeFilterDropdown();
     }
   }
 
-  toggleMobileMenu() {
-    // Toggle Shopify's details-based menu drawer
-    const menuDrawerDetails = document.querySelector('#Details-menu-drawer-container');
-    if (menuDrawerDetails) {
-      menuDrawerDetails.toggleAttribute('open');
-    } else {
-      console.warn('Mobile menu drawer not found');
+  async handleCartChange() {
+    try {
+      const response = await fetch('/cart.js');
+      const cart = await response.json();
+      const count = cart.item_count > 99 ? '99+' : String(cart.item_count);
+      this.cartCountNodes.forEach((node) => {
+        node.textContent = count;
+        node.classList.toggle('hidden', cart.item_count === 0);
+      });
+    } catch (error) {
+      console.error('Failed to refresh cart count', error);
     }
-  }
-
-  updateCartBadge() {
-    // Fetch and update cart count badge
-    fetch('/cart.js')
-      .then((res) => res.json())
-      .then((cart) => {
-        const badge = this.cartBtn?.querySelector('.badge');
-        if (badge && cart.item_count > 0) {
-          badge.textContent = cart.item_count;
-          if (cart.item_count > 99) {
-            badge.textContent = '99+';
-          }
-        }
-      })
-      .catch((err) => console.error('Error updating cart:', err));
   }
 }
 
-// Initialize header when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-  const headerSection = document.querySelector('.section-header-morpheus');
-  if (headerSection) {
-    new MorpheusHeader(headerSection);
-  }
-});
-
-// Also initialize if header is dynamically added
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    const headerSection = document.querySelector('.section-header-morpheus');
-    if (headerSection) {
-      new MorpheusHeader(headerSection);
+const initMorpheusHeader = () => {
+  document.querySelectorAll('.section-header-morpheus').forEach((section) => {
+    if (section.dataset.morpheusReady === 'true') {
+      return;
     }
+
+    section.dataset.morpheusReady = 'true';
+    new MorpheusHeader(section);
   });
-} else {
-  const headerSection = document.querySelector('.section-header-morpheus');
-  if (headerSection) {
-    new MorpheusHeader(headerSection);
-  }
-}
+};
+
+document.addEventListener('DOMContentLoaded', initMorpheusHeader);
+document.addEventListener('shopify:section:load', initMorpheusHeader);
