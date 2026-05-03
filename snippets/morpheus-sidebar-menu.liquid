@@ -14,9 +14,9 @@
           <a href="{{ link.url }}" class="sidebar-links-item">
             <span class="menu-link-text">{{ link.title }}</span>
             {% if link.links != blank %}
-              <i class="bi bi-chevron-down"></i>
+              {% render 'morpheus-icon', name: 'chevron-down' %}
             {% else %}
-              <i class="bi bi-chevron-right"></i>
+              {% render 'morpheus-icon', name: 'chevron-right' %}
             {% endif %}
           </a>
           {% if link.links != blank %}

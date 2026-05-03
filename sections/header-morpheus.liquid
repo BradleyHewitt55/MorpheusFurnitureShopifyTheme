@@ -28,7 +28,7 @@
     <div class="main-column">
       {% if request.page_type != 'index' %}
         <button class="icon-btn back-btn" type="button" aria-label="Go back" data-back-button>
-          <i class="bi bi-chevron-left"></i>
+          {% render 'morpheus-icon', name: 'back' %}
         </button>
       {% endif %}
 
@@ -52,7 +52,7 @@
             {% if link.current %}aria-current="page"{% endif %}
           >
             {% if link.title == 'On Sale' %}
-              <i class="bi bi-tag-fill"></i>
+              {% render 'morpheus-icon', name: 'tag' %}
             {% endif %}
             <span>{{ link.title }}</span>
           </a>
@@ -61,11 +61,11 @@
 
       <div class="actions">
         <button class="icon-btn search-toggle" type="button" aria-label="Search" aria-expanded="true" data-search-toggle>
-          <i class="bi bi-search"></i>
+          {% render 'morpheus-icon', name: 'search' %}
         </button>
 
         <button class="icon-btn cart-btn" type="button" aria-label="Cart" data-cart-trigger>
-          <i class="bi bi-cart"></i>
+          {% render 'morpheus-icon', name: 'cart' %}
           <span class="badge{% if cart.item_count == 0 %} hidden{% endif %}" data-cart-count>
             {% if cart.item_count > 99 %}99+{% else %}{{ cart.item_count }}{% endif %}
           </span>
@@ -73,7 +73,7 @@
 
         <div class="account-menu" data-account-menu>
           <a href="{{ account_target }}" class="icon-btn account-btn" aria-label="Account" data-account-button aria-expanded="false">
-            <i class="bi bi-person"></i>
+            {% render 'morpheus-icon', name: 'person' %}
             {% if customer %}
               <span class="status-dot"></span>
             {% endif %}
@@ -82,24 +82,24 @@
           <div class="account-dropdown" hidden data-account-dropdown>
             {% if customer %}
               <a href="{{ routes.account_url }}" class="account-link">
-                <i class="bi bi-person"></i>
+                {% render 'morpheus-icon', name: 'person' %}
                 <span>Profile</span>
               </a>
               <a href="{{ routes.account_addresses_url }}" class="account-link">
-                <i class="bi bi-geo-alt"></i>
+                {% render 'morpheus-icon', name: 'wishlist' %}
                 <span>Wishlist</span>
               </a>
               <a href="{{ routes.account_logout_url }}" class="account-link">
-                <i class="bi bi-box-arrow-right"></i>
+                {% render 'morpheus-icon', name: 'logout' %}
                 <span>Logout</span>
               </a>
             {% else %}
               <a href="{{ routes.account_login_url }}" class="account-link">
-                <i class="bi bi-box-arrow-in-right"></i>
+                {% render 'morpheus-icon', name: 'login' %}
                 <span>Login</span>
               </a>
               <a href="{{ routes.account_register_url }}" class="account-link">
-                <i class="bi bi-person-plus"></i>
+                {% render 'morpheus-icon', name: 'register' %}
                 <span>Register</span>
               </a>
             {% endif %}

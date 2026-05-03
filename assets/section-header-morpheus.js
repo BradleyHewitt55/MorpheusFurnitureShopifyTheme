@@ -172,6 +172,8 @@ class MorpheusHeader {
       return;
     }
 
+    this.closeAccountDropdown();
+    this.closeFilterDropdown();
     this.sidebar?.classList.add('open');
     this.sidebarOverlay?.classList.add('visible');
     this.burgerButton?.classList.add('is-active');
@@ -190,6 +192,10 @@ class MorpheusHeader {
   }
 
   openCart() {
+    this.closeSidebar();
+    this.closeAccountDropdown();
+    this.closeFilterDropdown();
+
     const drawer = document.querySelector('cart-drawer');
     if (drawer && typeof drawer.open === 'function') {
       drawer.open();

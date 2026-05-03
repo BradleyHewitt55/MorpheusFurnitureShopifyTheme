@@ -31,19 +31,19 @@
 <nav class="mobile-nav" aria-label="Mobile navigation">
   <div class="nav">
     <a href="{{ home_url }}" class="nav-item{% if request.path == home_url %} active{% endif %}">
-      <i class="bi bi-house-door"></i>
+      {% render 'morpheus-icon', name: 'home' %}
       <span class="nav-text">Home</span>
     </a>
     <a href="{{ shop_url }}" class="nav-item{% if request.path contains shop_url and shop_url != routes.root_url %} active{% endif %}">
-      <i class="bi bi-grid"></i>
+      {% render 'morpheus-icon', name: 'grid' %}
       <span class="nav-text">Shop</span>
     </a>
     <a href="{{ sale_url }}" class="nav-item{% if is_sale_active %} active{% endif %}">
-      <i class="bi bi-tag-fill sale-icon"></i>
+      {% render 'morpheus-icon', name: 'tag' %}
       <span class="nav-text">On Sale</span>
     </a>
     <a href="{{ profile_url }}" class="nav-item{% if request.path contains '/account' %} active{% endif %}">
-      <i class="bi bi-person"></i>
+      {% render 'morpheus-icon', name: 'person' %}
       <span class="nav-text">Profile</span>
     </a>
   </div>

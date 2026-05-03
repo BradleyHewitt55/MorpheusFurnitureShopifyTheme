@@ -9,7 +9,7 @@
 <form action="{{ routes.search_url }}" method="get" role="search" class="search-bar-wrapper" data-search-form>
   <div class="filter-toggle" data-search-filter-toggle tabindex="0" role="button" aria-expanded="false" aria-label="Search filter">
     <span data-search-filter-label>All Categories</span>
-    <i class="bi bi-chevron-down"></i>
+    {% render 'morpheus-icon', name: 'chevron-down' %}
 
     <div class="filter-dropdown" data-search-filter-dropdown>
       <button
@@ -67,7 +67,7 @@
   >
 
   <button type="submit" class="search-btn" aria-label="Search">
-    <i class="bi bi-search"></i>
+    {% render 'morpheus-icon', name: 'search' %}
   </button>
 </form>
 

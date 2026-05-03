@@ -53,16 +53,16 @@
     <div class="social-icons">
       {% if settings.social_instagram_link != blank %}
         <a href="{{ settings.social_instagram_link }}" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
-          <i class="bi bi-instagram"></i>
+          {% render 'morpheus-icon', name: 'instagram' %}
         </a>
       {% endif %}
       {% if settings.social_facebook_link != blank %}
         <a href="{{ settings.social_facebook_link }}" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
-          <i class="bi bi-facebook"></i>
+          {% render 'morpheus-icon', name: 'facebook' %}
         </a>
       {% endif %}
       <a href="https://wa.me/27618523328" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">
-        <i class="bi bi-whatsapp"></i>
+        {% render 'morpheus-icon', name: 'whatsapp' %}
       </a>
     </div>
   </section>
@@ -84,7 +84,7 @@
           required
         >
         <button type="submit" class="newsletter-btn" aria-label="Subscribe">
-          <i class="bi bi-send"></i>
+          {% render 'morpheus-icon', name: 'send' %}
         </button>
       </div>
 

@@ -1,0 +1,94 @@
+{% doc %}
+  Renders a Morpheus shell icon.
+  @param {string} name - The icon name.
+{% enddoc %}
+
+{% case name %}
+  {% when 'search' %}
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <circle cx="11" cy="11" r="6.5"></circle>
+      <path d="M16 16L21 21"></path>
+    </svg>
+  {% when 'cart' %}
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <circle cx="9" cy="20" r="1.6"></circle>
+      <circle cx="18" cy="20" r="1.6"></circle>
+      <path d="M3 4H5L7.4 15.5H18.2L21 8H8.2"></path>
+    </svg>
+  {% when 'person' %}
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <circle cx="12" cy="8" r="3.5"></circle>
+      <path d="M5 20C6.8 16.8 9 15.5 12 15.5C15 15.5 17.2 16.8 19 20"></path>
+    </svg>
+  {% when 'back' %}
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M14.5 5L7.5 12L14.5 19"></path>
+    </svg>
+  {% when 'tag' %}
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M4 12L12 4H19L20 5V12L12 20L4 12Z"></path>
+      <circle cx="16" cy="8" r="1.2" fill="currentColor" stroke="none"></circle>
+    </svg>
+  {% when 'login' %}
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M10 7V4H20V20H10V17"></path>
+      <path d="M14 12H4"></path>
+      <path d="M8 8L4 12L8 16"></path>
+    </svg>
+  {% when 'register' %}
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <circle cx="10" cy="8" r="3.2"></circle>
+      <path d="M4.5 19C6 16 8 14.8 10 14.8C12 14.8 14 16 15.5 19"></path>
+      <path d="M18 8V14"></path>
+      <path d="M15 11H21"></path>
+    </svg>
+  {% when 'logout' %}
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M14 7V4H4V20H14V17"></path>
+      <path d="M10 12H20"></path>
+      <path d="M16 8L20 12L16 16"></path>
+    </svg>
+  {% when 'wishlist' %}
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M12 20C12 20 4.5 15.6 4.5 9.6C4.5 7.2 6.3 5.5 8.5 5.5C10 5.5 11.1 6.2 12 7.3C12.9 6.2 14 5.5 15.5 5.5C17.7 5.5 19.5 7.2 19.5 9.6C19.5 15.6 12 20 12 20Z"></path>
+    </svg>
+  {% when 'chevron-down' %}
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M6 9L12 15L18 9"></path>
+    </svg>
+  {% when 'chevron-right' %}
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M9 6L15 12L9 18"></path>
+    </svg>
+  {% when 'home' %}
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M4 11.5L12 5L20 11.5"></path>
+      <path d="M7 10.5V19H17V10.5"></path>
+    </svg>
+  {% when 'grid' %}
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <rect x="4" y="4" width="6.5" height="6.5"></rect>
+      <rect x="13.5" y="4" width="6.5" height="6.5"></rect>
+      <rect x="4" y="13.5" width="6.5" height="6.5"></rect>
+      <rect x="13.5" y="13.5" width="6.5" height="6.5"></rect>
+    </svg>
+  {% when 'instagram' %}
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <rect x="4" y="4" width="16" height="16" rx="4"></rect>
+      <circle cx="12" cy="12" r="4"></circle>
+      <circle cx="17" cy="7" r="1"></circle>
+    </svg>
+  {% when 'facebook' %}
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M13.5 20V12.5H16L16.5 9.5H13.5V7.8C13.5 6.8 13.8 6.2 15.3 6.2H16.6V3.5C16 3.4 15.4 3.3 14.2 3.3C11.7 3.3 10 4.8 10 7.6V9.5H7.5V12.5H10V20H13.5Z" fill="currentColor" stroke="none"></path>
+    </svg>
+  {% when 'whatsapp' %}
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M12 4.5C7.9 4.5 4.5 7.8 4.5 11.9C4.5 13.4 5 14.8 5.9 16L5 19.5L8.6 18.6C9.7 19.3 10.8 19.6 12 19.6C16.1 19.6 19.5 16.2 19.5 12.1C19.5 7.9 16.1 4.5 12 4.5Z"></path>
+      <path d="M9.2 8.7C9 8.1 8.8 8.2 8.5 8.2C8.2 8.2 7.9 8.3 7.7 8.6C7.5 8.9 6.9 9.5 6.9 10.7C6.9 11.9 7.8 13 8 13.2C8.2 13.4 9.7 15.7 12 16.5C13.9 17.2 14.3 17.1 14.7 17C15 16.9 15.8 16.2 16 15.6C16.2 15 16.2 14.5 16.1 14.3C16 14.1 15.7 14 15.3 13.8C14.9 13.6 13.9 13.1 13.6 13C13.3 12.9 13.1 12.8 12.9 13.1C12.7 13.4 12.2 14 12 14.2C11.8 14.4 11.6 14.4 11.2 14.2C10.8 14 9.6 13.7 8.6 12.4C7.8 11.5 7.3 10.4 7.1 10C6.9 9.7 7.1 9.5 7.3 9.3C7.5 9.1 7.7 8.8 7.8 8.6C7.9 8.4 8 8.2 8.1 8C8.2 7.8 8.1 7.6 8 7.4" fill="currentColor" stroke="none"></path>
+    </svg>
+  {% when 'send' %}
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M4 19L20 12L4 5L4 11L15 12L4 13L4 19Z"></path>
+    </svg>
+{% endcase %}

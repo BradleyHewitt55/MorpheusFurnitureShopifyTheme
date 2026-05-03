@@ -26,6 +26,17 @@ body.overflow-hidden-mobile {
   color: inherit;
 }
 
+.section-header-morpheus svg {
+  width: 1.35rem;
+  height: 1.35rem;
+  display: block;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
 .main-column {
   background-color: var(--morpheus-shell-color);
   display: flex;
@@ -170,34 +181,73 @@ body.overflow-hidden-mobile {
 }
 
 .burger-btn {
+  --color: #fff;
+  width: 36px;
+  height: 36px;
   padding: 0;
+  margin: 0;
+  outline: none;
+  position: relative;
+  border: none;
+  background: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .burger-btn svg {
-  width: 2.6rem;
-  height: 2rem;
-  overflow: visible;
+  width: 64px;
+  height: 48px;
+  top: -6px;
+  left: -14px;
+  stroke: var(--color);
+  stroke-width: 4px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  display: block;
+  position: absolute;
 }
 
 .burger-btn path {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 5.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: transform 0.35s ease, opacity 0.35s ease, d 0.35s ease;
+  transition:
+    stroke-dasharray var(--duration, 0.85s) var(--easing, ease) var(--delay, 0s),
+    stroke-dashoffset var(--duration, 0.85s) var(--easing, ease) var(--delay, 0s);
+  stroke-dasharray: var(--array-1, 26px) var(--array-2, 100px);
+  stroke-dashoffset: var(--offset, 126px);
+  transform: translateZ(0);
 }
 
-.burger-btn.is-active path:nth-child(1) {
-  d: path("M19,15 L45,37");
+.burger-btn path:nth-child(2) {
+  --duration: 0.7s;
+  --easing: ease-in;
+  --offset: 100px;
+  --array-2: 74px;
+}
+
+.burger-btn path:nth-child(3) {
+  --offset: 133px;
+  --array-2: 107px;
+}
+
+.burger-btn.is-active path {
+  --offset: 57px;
+}
+
+.burger-btn.is-active path:nth-child(1),
+.burger-btn.is-active path:nth-child(3) {
+  --delay: 0.15s;
+  --easing: cubic-bezier(0.2, 0.4, 0.2, 1.1);
 }
 
 .burger-btn.is-active path:nth-child(2) {
-  opacity: 0;
+  --duration: 0.4s;
+  --offset: 2px;
+  --array-1: 1px;
 }
 
 .burger-btn.is-active path:nth-child(3) {
-  d: path("M45,15 L19,37");
+  --offset: 58px;
 }
 
 .search-column {
@@ -266,6 +316,10 @@ body.overflow-hidden-mobile {
   transform: rotate(180deg);
 }
 
+.filter-toggle.active svg {
+  transform: rotate(180deg);
+}
+
 .filter-dropdown {
   position: absolute;
   top: calc(100% + 0.75rem);
@@ -314,6 +368,7 @@ body.overflow-hidden-mobile {
   padding: 0.7rem 1rem;
   color: var(--morpheus-shell-color);
   min-width: 0;
+  font-size: 1rem;
 }
 
 .search-input::placeholder {
@@ -329,6 +384,12 @@ body.overflow-hidden-mobile {
   justify-content: center;
   padding: 0.7rem 1rem;
   cursor: pointer;
+}
+
+.search-column *,
+.search-column .dropdown-item,
+.search-column .search-input {
+  color: var(--morpheus-shell-color);
 }
 
 .dropdown-overlay {
@@ -397,6 +458,11 @@ body.overflow-hidden-mobile {
   border-radius: 14px;
 }
 
+.sidebar-links-item svg,
+.sidebar-sublink svg {
+  flex-shrink: 0;
+}
+
 .sidebar-links-item {
   padding: 0.95rem 1rem;
   background: rgba(126, 27, 169, 0.05);
@@ -448,6 +514,11 @@ body.overflow-hidden-mobile {
   font-size: 1.7rem;
 }
 
+.nav-item svg {
+  width: 1.7rem;
+  height: 1.7rem;
+}
+
 .nav-text {
   display: none;
   white-space: nowrap;
@@ -471,6 +542,10 @@ body.overflow-hidden-mobile {
 
 .nav-item.active .sale-icon {
   color: #ffd700;
+}
+
+.nav-item.active svg {
+  color: var(--morpheus-shell-color);
 }
 
 .floating-cart {
@@ -499,6 +574,11 @@ body.overflow-hidden-mobile {
   background: var(--morpheus-shell-color);
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.floating-cart svg {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 @media (max-width: 1200px) {
