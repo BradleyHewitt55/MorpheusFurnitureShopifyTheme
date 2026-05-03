@@ -23,6 +23,7 @@
   class="section-header-morpheus"
   data-section-id="{{ section.id }}"
   data-enable-cart-drawer="{{ section.settings.enable_cart_drawer }}"
+  style="--morpheus-shell-color: {{ shop.brand.colors.primary[0].background }}; --morpheus-shell-foreground: {{ shop.brand.colors.primary[0].foreground }};"
 >
   <div class="top-navbar search-open" data-morpheus-header>
     <div class="main-column">
@@ -33,7 +34,13 @@
       {% endif %}
 
       <a href="{{ routes.root_url }}" class="logo" aria-label="{{ shop.name }}">
-        {% if settings.logo %}
+        {% if shop.brand.logo %}
+          {{
+            shop.brand.logo
+            | image_url: width: 500
+            | image_tag: alt: shop.name, loading: 'eager'
+          }}
+        {% elsif settings.logo %}
           {{
             settings.logo
             | image_url: width: 500

@@ -19,6 +19,7 @@ class MorpheusHeader {
     this.backButton = section.querySelector('[data-back-button]');
     this.cartTriggers = section.querySelectorAll('[data-cart-trigger]');
     this.cartCountNodes = section.querySelectorAll('[data-cart-count]');
+    this.autoCloseCartTimeout = null;
     this.lastScrollTop = 0;
     this.searchVisible = true;
     this.delta = 15;
@@ -30,6 +31,7 @@ class MorpheusHeader {
 
   init() {
     window.addEventListener('scroll', this.handleScroll, { passive: true });
+    window.addEventListener('resize', () => this.setHeaderBottom(), { passive: true });
     document.addEventListener('click', this.handleDocumentClick);
     document.addEventListener('cart:change', this.handleCartChange);
 
@@ -64,6 +66,12 @@ class MorpheusHeader {
     });
 
     this.handleScroll();
+    this.setHeaderBottom();
+  }
+
+  setHeaderBottom() {
+    const bottom = Math.max(0, this.section.getBoundingClientRect().bottom);
+    document.documentElement.style.setProperty('--morpheus-header-bottom', `${bottom}px`);
   }
 
   handleScroll() {
@@ -74,6 +82,7 @@ class MorpheusHeader {
     const isScrolled = scrollTop > 0;
 
     this.navbar.classList.toggle('scrolled', isScrolled);
+    this.setHeaderBottom();
 
     if (Math.abs(this.lastScrollTop - scrollTop) <= this.delta) {
       return;
@@ -199,6 +208,7 @@ class MorpheusHeader {
     const drawer = document.querySelector('cart-drawer');
     if (drawer && typeof drawer.open === 'function') {
       drawer.open();
+      this.scheduleCartAutoClose(drawer);
       return;
     }
 
@@ -206,10 +216,24 @@ class MorpheusHeader {
     if (drawer && overlay) {
       drawer.classList.add('active');
       document.body.classList.add('overflow-hidden');
+      this.scheduleCartAutoClose(drawer);
       return;
     }
 
     window.location.assign('/cart');
+  }
+
+  scheduleCartAutoClose(drawer) {
+    window.clearTimeout(this.autoCloseCartTimeout);
+    this.autoCloseCartTimeout = window.setTimeout(() => {
+      if (drawer && typeof drawer.close === 'function') {
+        drawer.close();
+        return;
+      }
+
+      drawer?.classList.remove('active');
+      document.body.classList.remove('overflow-hidden');
+    }, 2000);
   }
 
   navigateBack() {

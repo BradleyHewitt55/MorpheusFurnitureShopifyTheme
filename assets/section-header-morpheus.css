@@ -1,9 +1,11 @@
 :root {
   --morpheus-shell-color: #7e1ba9;
+  --morpheus-shell-foreground: #ffffff;
   --morpheus-shell-surface: #ffffff;
   --morpheus-shell-text: #2e2a39;
   --morpheus-shell-border: rgba(46, 42, 57, 0.12);
   --morpheus-shell-shadow: 0 20px 45px rgba(0, 0, 0, 0.16);
+  --morpheus-header-bottom: 0px;
 }
 
 .section-header-morpheus {
@@ -18,7 +20,7 @@ body.overflow-hidden-mobile {
   display: flex;
   flex-direction: column;
   background-color: var(--morpheus-shell-color);
-  color: #fff;
+  color: var(--morpheus-shell-foreground);
   position: relative;
 }
 
@@ -53,7 +55,7 @@ body.overflow-hidden-mobile {
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  color: #fff;
+  color: var(--morpheus-shell-foreground);
   text-decoration: none;
 }
 
@@ -74,7 +76,7 @@ body.overflow-hidden-mobile {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #fff;
+  color: var(--morpheus-shell-foreground);
   text-decoration: none;
   transition: opacity 0.2s ease;
 }
@@ -118,7 +120,7 @@ body.overflow-hidden-mobile {
   padding: 0 0.25rem;
   border-radius: 999px;
   background: #dd1d1d;
-  color: #fff;
+  color: var(--morpheus-shell-foreground);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -162,7 +164,7 @@ body.overflow-hidden-mobile {
 }
 
 .account-link:hover {
-  background: rgba(126, 27, 169, 0.08);
+  background: color-mix(in srgb, var(--morpheus-shell-color) 8%, transparent);
 }
 
 .status-dot {
@@ -181,7 +183,7 @@ body.overflow-hidden-mobile {
 }
 
 .burger-btn {
-  --color: #fff;
+  --color: var(--morpheus-shell-foreground);
   width: 36px;
   height: 36px;
   padding: 0;
@@ -356,7 +358,7 @@ body.overflow-hidden-mobile {
 
 .dropdown-item:hover,
 .dropdown-item.active {
-  background: rgba(126, 27, 169, 0.1);
+  background: color-mix(in srgb, var(--morpheus-shell-color) 10%, transparent);
   color: var(--morpheus-shell-color);
 }
 
@@ -372,7 +374,7 @@ body.overflow-hidden-mobile {
 }
 
 .search-input::placeholder {
-  color: rgba(126, 27, 169, 0.6);
+  color: color-mix(in srgb, var(--morpheus-shell-color) 60%, transparent);
 }
 
 .search-btn {
@@ -400,7 +402,10 @@ body.overflow-hidden-mobile {
 
 .sidebar-layer {
   position: fixed;
-  inset: 0;
+  top: var(--morpheus-header-bottom);
+  right: 0;
+  bottom: 0;
+  left: 0;
   background: rgba(46, 42, 57, 0.18);
   opacity: 0;
   visibility: hidden;
@@ -416,7 +421,7 @@ body.overflow-hidden-mobile {
 .sidebar {
   position: fixed;
   right: 0;
-  top: 0;
+  top: var(--morpheus-header-bottom);
   bottom: 0;
   width: max-content;
   min-width: 24rem;
@@ -465,7 +470,7 @@ body.overflow-hidden-mobile {
 
 .sidebar-links-item {
   padding: 0.95rem 1rem;
-  background: rgba(126, 27, 169, 0.05);
+  background: color-mix(in srgb, var(--morpheus-shell-color) 5%, transparent);
 }
 
 .sidebar-sublink {
@@ -484,8 +489,9 @@ body.overflow-hidden-mobile {
   right: 0;
   bottom: 0;
   display: none;
-  z-index: 105;
-  padding: 0 0.75rem 0.75rem;
+  z-index: 250;
+  padding: 0 0.75rem calc(0.75rem + env(safe-area-inset-bottom));
+  pointer-events: none;
 }
 
 .nav {
@@ -497,6 +503,7 @@ body.overflow-hidden-mobile {
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
   box-shadow: var(--morpheus-shell-shadow);
+  pointer-events: auto;
 }
 
 .nav-item {
@@ -527,7 +534,7 @@ body.overflow-hidden-mobile {
 }
 
 .nav-item.active {
-  background: rgba(126, 27, 169, 0.1);
+  background: color-mix(in srgb, var(--morpheus-shell-color) 10%, transparent);
   justify-content: flex-start;
 }
 
@@ -572,7 +579,7 @@ body.overflow-hidden-mobile {
 
 .floating-cart .cart-count {
   background: var(--morpheus-shell-color);
-  color: #fff;
+  color: var(--morpheus-shell-foreground);
   border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
@@ -606,6 +613,7 @@ body.overflow-hidden-mobile {
   .mobile-nav,
   .floating-cart {
     display: flex;
+    margin-left: auto;
   }
 
   .logo {
@@ -616,10 +624,15 @@ body.overflow-hidden-mobile {
 
   .main-column {
     padding: 1rem;
+    min-height: 4rem;
   }
 
   .search-column {
     padding: 0 1rem;
+  }
+
+  .search-open .search-column {
+    padding-bottom: 0.75rem;
   }
 
   .filter-toggle {
@@ -652,11 +665,14 @@ body.overflow-hidden-mobile {
   }
 
   .nav {
-    padding: 1rem 0.75rem;
+    padding: 0.55rem 0.6rem;
+    border-radius: 0;
   }
 
   .nav-item {
-    padding: 0.65rem 0.75rem;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    padding: 0.45rem 0.6rem;
     gap: 0.35rem;
   }
 

@@ -110,13 +110,6 @@
               {% render 'cart-progress-bar', block: block %}
             {% when 'checkpoints_bar' %}
               {% render 'cart-checkpoints-bar', block: block %}
-            {% when 'countdown_timer' %}
-              {% capture timer %}
-                <countdown-timer data-duration="{{ block.settings.timer_duration }}"></countdown-timer>
-              {% endcapture %}
-              <div class='cart-timer color-{{ block.settings.color_scheme }}' style="--font-size:{{ block.settings.font_size }}rem;--margin-top: {{ block.settings.margin_top | divided_by: 10.0 }}rem;--margin-bottom: {{ block.settings.margin_bottom | divided_by: 10.0 }}rem;" {{ block.shopify_attributes }}>
-                {{ block.settings.timer_text | replace: '[timer]', timer }}
-              </div>
             {% when 'cart_items' %}
               <cart-drawer-items
                 {% if cart == empty %}
@@ -189,9 +182,15 @@
                                       <p class="caption-with-letter-spacing light">{{ item.product.vendor }}</p>
                                     {%- endif -%}
         
-                                    <{% if block.settings.title_link %}a href="{{ item.url }}"{% else %}h4{% endif %} class="cart-item__name h4 break">
-                                      {{- item.product.title | escape -}}
-                                    </{% if block.settings.title_link %}a{% else %}h4{% endif %}>
+                                    {% if block.settings.title_link %}
+                                      <a href="{{ item.url }}" class="cart-item__name h4 break">
+                                        {{- item.product.title | escape -}}
+                                      </a>
+                                    {% else %}
+                                      <h4 class="cart-item__name h4 break">
+                                        {{- item.product.title | escape -}}
+                                      </h4>
+                                    {% endif %}
         
                                     {%- if item.original_price != item.final_price and block.settings.display_single_item_prices -%}
                                       {% assign has_props = true %}

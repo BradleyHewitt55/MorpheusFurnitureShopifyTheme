@@ -5,10 +5,20 @@
 
 {{ 'section-footer-morpheus.css' | asset_url | stylesheet_tag }}
 
-<footer class="footer section-footer-morpheus" data-section-id="{{ section.id }}">
+<footer
+  class="footer section-footer-morpheus"
+  data-section-id="{{ section.id }}"
+  style="--morpheus-footer-color: {{ shop.brand.colors.primary[0].background }}; --morpheus-footer-foreground: {{ shop.brand.colors.primary[0].foreground }};"
+>
   <section class="brand-info">
     <div class="logo">
-      {% if settings.logo %}
+      {% if shop.brand.logo %}
+        {{
+          shop.brand.logo
+          | image_url: width: 500
+          | image_tag: alt: shop.name, loading: 'lazy'
+        }}
+      {% elsif settings.logo %}
         {{
           settings.logo
           | image_url: width: 500
@@ -68,34 +78,8 @@
   </section>
 
   <section class="newsletter">
-    <h3>Subscribe</h3>
-    <p>Get updates on new products and special offers</p>
-    {%- form 'customer', id: '975833', class: 'newsletter-form' -%}
-      <input type="hidden" name="contact[tags]" value="newsletter">
-      <div class="newsletter-field-wrapper">
-        <input
-          id="FooterNewsletterEmail-{{ section.id }}"
-          type="email"
-          name="contact[email]"
-          class="newsletter-input"
-          value="{{ form.email }}"
-          placeholder="Enter your email"
-          autocomplete="email"
-          required
-        >
-        <button type="submit" class="newsletter-btn" aria-label="Subscribe">
-          {% render 'morpheus-icon', name: 'send' %}
-        </button>
-      </div>
-
-      {% if form.errors %}
-        <p class="newsletter-error">{{ form.errors | default_errors }}</p>
-      {% endif %}
-
-      {% if form.posted_successfully? %}
-        <p class="newsletter-success">Thanks for subscribing!</p>
-      {% endif %}
-    {%- endform -%}
+    {% form '975833' %}
+    {% endform %}
   </section>
 </footer>
 

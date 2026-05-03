@@ -185,7 +185,7 @@
     "show_cart_payment_badges": false,
     "cart_trust_badges_width": 100,
     "enable_cart_discount": false,
-    "enable_cart_timer": true,
+    "enable_cart_timer": false,
     "cart_timer_text": "<strong>Cart reserved for [timer] more minutes!</strong>",
     "enable_cart_progress_bar": true,
     "cart_progress_message": "Spend [amount] more to get FREE shipping!",
@@ -270,17 +270,6 @@
       "cart-drawer": {
         "type": "cart-drawer",
         "blocks": {
-          "6269cf6e-8e24-4068-8e2a-35bb4addad4e": {
-            "type": "countdown_timer",
-            "settings": {
-              "timer_text": "<strong>Cart reserved for [timer]</strong>",
-              "timer_duration": 300,
-              "font_size": "1.4",
-              "color_scheme": "inverse",
-              "margin_top": 0,
-              "margin_bottom": 15
-            }
-          },
           "097b7b4f-c0b8-4073-a06b-e6d49a5aad20": {
             "type": "cart_items",
             "settings": {

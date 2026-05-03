@@ -1,5 +1,5 @@
 .section-footer-morpheus {
-  background-color: #7e1ba9;
+  background-color: var(--morpheus-footer-color);
 }
 
 .footer.section-footer-morpheus {
@@ -7,8 +7,8 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 2rem;
   padding: 3rem 10rem;
-  color: #fff;
-  background-color: #7e1ba9;
+  color: var(--morpheus-footer-foreground);
+  background-color: var(--morpheus-footer-color);
 }
 
 .footer.section-footer-morpheus,
@@ -17,7 +17,7 @@
 .footer.section-footer-morpheus li,
 .footer.section-footer-morpheus a,
 .footer.section-footer-morpheus span {
-  color: #fff;
+  color: var(--morpheus-footer-foreground);
 }
 
 .brand-info,
@@ -77,7 +77,7 @@
 
 .contact-details a,
 .link-list a {
-  color: #fff;
+  color: var(--morpheus-footer-foreground);
   text-decoration: none;
 }
 
@@ -91,7 +91,7 @@
   height: 2.5rem;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.12);
-  color: #fff;
+  color: var(--morpheus-footer-foreground);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -118,13 +118,17 @@
 }
 
 .footer.section-footer-morpheus h3 {
-  color: #fff;
+  color: var(--morpheus-footer-foreground);
 }
 
 .newsletter-form {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+}
+
+.newsletter form {
+  width: 100%;
 }
 
 .newsletter-field-wrapper {
@@ -150,7 +154,7 @@
 .newsletter-btn {
   border: 0;
   background: transparent;
-  color: #7e1ba9;
+  color: var(--morpheus-footer-color);
   display: inline-flex;
   align-items: center;
   justify-content: center;
