@@ -1,0 +1,123 @@
+{%- style -%}
+  .section-footer-morpheus {
+    --primary-color: {{ section.settings.footer_color | color_to_rgb }};
+  }
+{%- endstyle -%}
+
+<link rel="stylesheet" href="{{ 'section-footer-morpheus.css' | asset_url }}">
+
+<footer class="footer section-footer-morpheus" data-section-id="{{ section.id }}" style="background-color: {{ section.settings.footer_color }}">
+
+  <!-- Brand Info Section -->
+  <section class="brand-info">
+    <div class="logo">
+      {% if settings.logo %}
+        <img src="{{ settings.logo | image_url: width: 500 }}" alt="{{ shop.name }}" />
+      {% else %}
+        <span>{{ shop.name }}</span>
+      {% endif %}
+    </div>
+    <ul class="contact-details">
+      <li>
+        Email: <a href="mailto:support@morpheusfurniture.co.za">support@morpheusfurniture.co.za</a>
+      </li>
+      <li>
+        <a href="tel:+27618523328">Phone: +27 61 852 3328</a>
+      </li>
+      <li>
+        <a href="https://wa.me/27618523328">WhatsApp: +27 61 852 3328</a>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Products Section -->
+  <section class="products">
+    <h3>Products</h3>
+    <ul class="link-list">
+      {% for collection in collections %}
+        {% if collection.title != "All" and forloop.index <= 5 %}
+          <li><a href="{{ collection.url }}">{{ collection.title }}</a></li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </section>
+
+  <!-- Help & Advice Section -->
+  <section class="help-advice">
+    <h3>Help & Advice</h3>
+    <ul class="link-list">
+      <li><a href="/pages/about">About Us</a></li>
+      <li><a href="/pages/contact">Contact Us</a></li>
+      <li><a href="/pages/faqs">FAQ</a></li>
+      <li><a href="/policies/shipping-policy">Shipping Policy</a></li>
+      <li><a href="/policies/refund-policy">Return & Refund Policy</a></li>
+      <li><a href="/policies/terms-of-service">Terms & Conditions</a></li>
+      <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
+    </ul>
+  </section>
+
+  <!-- Social Media Section -->
+  <section class="social-media">
+    <h3>Follow Us On</h3>
+    <div class="social-icons">
+      {% if settings.social_instagram_link %}
+        <a href="{{ settings.social_instagram_link }}" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+          <i class="bi bi-instagram"></i>
+        </a>
+      {% endif %}
+      {% if settings.social_facebook_link %}
+        <a href="{{ settings.social_facebook_link }}" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+          <i class="bi bi-facebook"></i>
+        </a>
+      {% endif %}
+      <a href="https://wa.me/27618523328" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">
+        <i class="bi bi-whatsapp"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section class="newsletter">
+    <h3>Subscribe</h3>
+    <p>Get updates on new products and special offers</p>
+    {%- form 'customer', id: 'NewsletterFooter', class: 'newsletter-form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <div class="newsletter-field-wrapper">
+        <input
+          id="NewsletterEmail"
+          type="email"
+          name="contact[email]"
+          class="newsletter-input"
+          placeholder="Enter your email"
+          required
+          autocomplete="email"
+        />
+        <button type="submit" class="newsletter-btn" aria-label="Subscribe">
+          <i class="bi bi-send"></i>
+        </button>
+      </div>
+      {% if form.posted_successfully? %}
+        <p class="newsletter-success">Thanks for subscribing!</p>
+      {% endif %}
+    {%- endform -%}
+  </section>
+
+</footer>
+
+{% schema %}
+{
+  "name": "Footer - Morpheus",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Footer Settings"
+    },
+    {
+      "type": "color",
+      "id": "footer_color",
+      "label": "Footer background color",
+      "default": "#1a1a1a"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,151 @@
+<style>
+  {% if section.settings.sticky_header %}
+    .section-header-morpheus {
+      position: sticky;
+      top: 0;
+      z-index: 320;
+    }
+  {% endif %}
+</style>
+
+{%- style -%}
+  .section-header-morpheus {
+    --primary-color: {{ section.settings.header_color | color_to_rgb }};
+  }
+{%- endstyle -%}
+
+<link rel="stylesheet" href="{{ 'section-header-morpheus.css' | asset_url }}">
+<script src="{{ 'section-header-morpheus.js' | asset_url }}" defer></script>
+
+<div class="top-navbar search-closed section-header-morpheus" data-section-id="{{ section.id }}">
+
+  <!-- Main Bar -->
+  <div class="main-column">
+
+    <!-- Mobile Back Button (Hide on Desktop) -->
+    {% if request.page_type != 'index' %}
+      <button class="icon-btn back-btn" aria-label="Go back">
+        <i class="bi bi-chevron-left"></i>
+      </button>
+    {% endif %}
+
+    <!-- Logo -->
+    <a href="/" class="logo">
+      <img src="{{ settings.logo | image_url: width: 500 }}" alt="{{ shop.name }}" />
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="desktop-nav">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/collections/all" class="nav-link">Shop</a>
+      <a href="/collections/sale" class="nav-link">
+        <i class="bi bi-tag-fill"></i>
+        On Sale
+      </a>
+      <a href="/pages/about" class="nav-link">About Us</a>
+    </nav>
+
+    <!-- Actions -->
+    <div class="actions">
+      <!-- Search Toggle -->
+      <button class="icon-btn search-toggle" aria-label="Search">
+        <i class="bi bi-search"></i>
+      </button>
+
+      <!-- Cart -->
+      <button class="icon-btn cart-btn" aria-label="Cart">
+        <i class="bi bi-cart"></i>
+        {% if cart.item_count > 0 %}
+          <span class="badge">{{ cart.item_count }}</span>
+        {% endif %}
+      </button>
+
+      <!-- Account -->
+      <div class="account-menu">
+        <button class="icon-btn account-btn" aria-label="Account">
+          <i class="bi bi-person"></i>
+          {% if customer %}
+            <span class="status-dot"></span>
+          {% endif %}
+        </button>
+
+        <!-- Account Dropdown (shown via JS) -->
+        <div class="account-dropdown" hidden>
+          {% if customer %}
+            <a href="{{ routes.account_url }}" class="account-link">
+              <i class="bi bi-person"></i>
+              Profile
+            </a>
+            <a href="{{ routes.account_url }}/addresses" class="account-link">
+              <i class="bi bi-heart"></i>
+              Wishlist
+            </a>
+            <a href="{{ routes.account_logout_url }}" class="account-link">
+              <i class="bi bi-box-arrow-right"></i>
+              Logout
+            </a>
+          {% else %}
+            <a href="{{ routes.account_login_url }}" class="account-link">
+              <i class="bi bi-box-arrow-in-right"></i>
+              Login
+            </a>
+            <a href="{{ routes.account_register_url }}" class="account-link">
+              <i class="bi bi-person-plus"></i>
+              Register
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Burger (Hide on Desktop) -->
+    <div class="burger-menu">
+      <button class="burger-btn" aria-label="Menu" aria-expanded="false">
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Search Row -->
+  <div class="search-column">
+    {% render 'snippet-search-bar-morpheus' %}
+  </div>
+
+</div>
+
+<!-- Cart Drawer (Shopify's native drawer) -->
+{% if section.settings.enable_cart_drawer %}
+  <cart-drawer></cart-drawer>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Header - Morpheus",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_header",
+      "label": "Sticky header",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "header_color",
+      "label": "Header background color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_cart_drawer",
+      "label": "Enable cart drawer",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

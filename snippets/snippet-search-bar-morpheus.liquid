@@ -1,0 +1,15 @@
+<!-- Morpheus Search Bar Snippet -->
+
+<form action="{{ routes.search_url }}" method="get" role="search" class="search-bar">
+  <input
+    type="search"
+    name="q"
+    class="search-input"
+    placeholder="Search products..."
+    value="{{ search.terms | escape }}"
+    autocomplete="off"
+  />
+  <button type="submit" class="search-btn" aria-label="Search">
+    <i class="bi bi-search"></i>
+  </button>
+</form>
