@@ -3,7 +3,7 @@
 .top-navbar {
   display: flex;
   flex-direction: column;
-  background-color: var(--primary-color, #1a1a1a);
+  background-color: #4b0082 !important;
   position: relative;
   color: white;
 }
@@ -14,7 +14,7 @@
 
 /* Main Bar */
 .main-column {
-  background-color: var(--primary-color, #1a1a1a);
+  background-color: #4b0082 !important;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -166,7 +166,7 @@
 /* Search Column */
 .search-column {
   position: relative;
-  background-color: var(--primary-color, #1a1a1a);
+  background-color: #4b0082 !important;
   padding: 0 5rem;
   display: flex;
   justify-content: center;
