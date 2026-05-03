@@ -1,12 +1,12 @@
 {%- style -%}
   .section-footer-morpheus {
-    --primary-color: {{ section.settings.footer_color | color_to_rgb }};
+    --primary-color: {{ settings.colors_accent_1 | color_to_rgb }};
   }
 {%- endstyle -%}
 
 <link rel="stylesheet" href="{{ 'section-footer-morpheus.css' | asset_url }}">
 
-<footer class="footer section-footer-morpheus" data-section-id="{{ section.id }}" style="background-color: {{ section.settings.footer_color }}">
+<footer class="footer section-footer-morpheus" data-section-id="{{ section.id }}" style="background-color: {{ settings.colors_accent_1 }}">
 
   <!-- Brand Info Section -->
   <section class="brand-info">
@@ -80,7 +80,7 @@
   <section class="newsletter">
     <h3>Subscribe</h3>
     <p>Get updates on new products and special offers</p>
-    {%- form 'customer', id: 'NewsletterFooter', class: 'newsletter-form' -%}
+    {%- form 'customer', id: '975833', class: 'newsletter-form' -%}
       <input type="hidden" name="contact[tags]" value="newsletter">
       <div class="newsletter-field-wrapper">
         <input
@@ -107,17 +107,6 @@
 {% schema %}
 {
   "name": "Footer - Morpheus",
-  "settings": [
-    {
-      "type": "header",
-      "content": "Footer Settings"
-    },
-    {
-      "type": "color",
-      "id": "footer_color",
-      "label": "Footer background color",
-      "default": "#1a1a1a"
-    }
-  ]
+  "settings": []
 }
 {% endschema %}

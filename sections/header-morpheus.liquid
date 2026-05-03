@@ -10,7 +10,7 @@
 
 {%- style -%}
   .section-header-morpheus {
-    --primary-color: {{ section.settings.header_color | color_to_rgb }};
+    --primary-color: {{ settings.colors_accent_1 | color_to_rgb }};
   }
 {%- endstyle -%}
 
@@ -133,12 +133,6 @@
       "id": "sticky_header",
       "label": "Sticky header",
       "default": true
-    },
-    {
-      "type": "color",
-      "id": "header_color",
-      "label": "Header background color",
-      "default": "#1a1a1a"
     },
     {
       "type": "checkbox",
