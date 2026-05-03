@@ -1,12 +1,13 @@
 {%- style -%}
   .section-footer-morpheus {
+    background-color: {{ settings.colors_accent_1 }} !important;
     --primary-color: {{ settings.colors_accent_1 }};
   }
 {%- endstyle -%}
 
 <link rel="stylesheet" href="{{ 'section-footer-morpheus.css' | asset_url }}">
 
-<footer class="footer section-footer-morpheus" data-section-id="{{ section.id }}" style="background-color: {{ settings.colors_accent_1 }}">
+<footer class="footer section-footer-morpheus" data-section-id="{{ section.id }}">
 
   <!-- Brand Info Section -->
   <section class="brand-info">
