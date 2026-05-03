@@ -1,7 +1,6 @@
 /* Morpheus Footer Styles */
 
 .footer {
-  background-color: var(--primary-color, #1a1a1a);
   display: grid;
   padding: 3rem 10rem;
   gap: 2rem;

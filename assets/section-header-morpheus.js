@@ -114,10 +114,10 @@ class MorpheusHeader {
   }
 
   toggleMobileMenu() {
-    // Open Shopify's drawer menu
-    const menuDrawer = document.querySelector('[data-menu-drawer]');
-    if (menuDrawer) {
-      menuDrawer.classList.toggle('is-open');
+    // Toggle Shopify's details-based menu drawer
+    const menuDrawerDetails = document.querySelector('#Details-menu-drawer-container');
+    if (menuDrawerDetails) {
+      menuDrawerDetails.toggleAttribute('open');
     } else {
       console.warn('Mobile menu drawer not found');
     }
